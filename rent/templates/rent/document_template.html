@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landlord PDF Report</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            font-size: 14px; 
+            background-color:#f4f7fc;
+            color:#2c3e50; 
+            padding: 20px;
+        }
+        h2 {
+            background-color: #00796B;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 15px; 
+            table-layout: auto; 
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            table-layout: fixed;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+        }
+        td, th { 
+            
+            border: 1px solid #dfe6e9;
+            vertical-align: top; 
+            word-break: break-all; /* Forces long words to break */
+            overflow-wrap: break-word; /* Ensures proper wrapping */
+            white-space: normal; /* Allows wrapping */
+            padding: 10px; /* Reduce padding */
+            margin: 0; /* Ensure no extra spacing */
+        }
+        tr, td, th {
+            page-break-inside: avoid;
+        }
+
+                
+        tr:last-child {
+            margin-bottom: 0; /* Removes unnecessary bottom space */
+        }
+        tr:nth-child(even) {
+            background-color: #f0f5ff; /* Light blue alternating row color */
+        }
+        th { 
+           
+            text-align: left; 
+            width: 30%; 
+        }
+        th:nth-child(even) {
+            background-color: #f0f5ff; /* Light blue alternating row color */
+        }
+        .divider { 
+            border-bottom: 3px solid #2980b9; 
+            margin: 20px 0; 
+        }
+        a { 
+            color: #2980b9;
+            font-weight: bold; 
+            text-decoration: none; 
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #1a5276;
+        }
+        tr:hover {
+            background-color: #dbe9ff;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Landlord Details</h2>
+    <table>
+        <tr><th>Name:</th><td>{{ landlord.name }}</td></tr>
+        <tr><th>Email:</th><td><a href="mailto:{{ landlord.email }}">{{ landlord.email }}</a></td></tr>
+        <tr><th>Phone:</th><td><a href="tel:{{ landlord.phone }}">{{ landlord.phone }}</a></td></tr>
+        <tr><th>Address:</th><td>{{ landlord.address }}</td></tr>
+        <tr><th>Remark:</th><td>{{ landlord.remark }}</td></tr>
+    </table>
+    <div class="divider"></div>
+
+    <h2>Billboard Details</h2>
+    <table>
+        {% for billboard in billboards %}
+        <tr><th>HID:</th><td>{{ billboard.hid }}</td></tr>
+        <tr><th>District:</th><td>{{ billboard.district }}</td></tr>
+        <tr><th>City:</th><td>{{ billboard.city }}</td></tr>
+        <tr><th>Area:</th><td>{{ billboard.area }}</td></tr>
+        <tr><th>Location:</th><td>{{ billboard.location }}</td></tr>
+        <tr><th>Size:</th><td>{{ billboard.width }}m x {{ billboard.height }}m</td></tr>
+        <tr><td colspan="2" class="divider"></td></tr>
+        {% empty %}
+        <tr><td colspan="2">No billboards available.</td></tr>
+        {% endfor %}
+    </table>
+    <div class="divider"></div>
+
+    <h2>Rent Agreement</h2>
+    <table>
+        <tr><th>Agreement Number:</th><td>{{ rent_agreement.agreement_number }}</td></tr>
+        <tr><th>Start Date:</th><td>{{ rent_agreement.start_date }}</td></tr>
+        <tr><th>End Date:</th><td>{{ rent_agreement.end_date }}</td></tr>
+        <tr><th>Rent Amount (Yearly):</th><td>₹{{ rent_agreement.rent_amount_yearly }}</td></tr>
+        <tr><th>Payment Frequency (Months):</th><td>{{ rent_agreement.payment_frequency_months }}</td></tr>
+        <tr><th>Total Paid:</th><td>₹{{ rent_agreement.total_paid }}</td></tr>
+        <tr><th>Remaining Due:</th><td>₹{{ rent_agreement.remaining_due }}</td></tr>
+        <tr><th>Advance Amount:</th><td>₹{{ rent_agreement.advance_amount }}</td></tr>
+        <tr><th>Rent Increase Date:</th><td>{{ rent_agreement.rent_increase_date }}</td></tr>
+        <tr><th>Increase Amount:</th><td>₹{{ rent_agreement.increase_amount }}</td></tr>
+    </table>
+    <div class="divider"></div>
+
+    <h2>Installment Details</h2>
+    <table>
+        {% for installment in installments %}
+        <tr><th>Month:</th><td>{{ installment.formatted_month }}</td></tr>
+        <tr><th>Amount:</th><td>₹{{ installment.amount }}</td></tr>
+        <tr><th>Status:</th><td>{{ installment.status|yesno:"Paid,Not Paid" }}</td></tr>
+        <tr><td colspan="2" class="divider"></td></tr>
+        {% empty %}
+        <tr><td colspan="2">No installments available.</td></tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
